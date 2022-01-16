@@ -20,3 +20,9 @@ print(sprintf("%d is integer", x1))
 
 # float print
 print(sprintf("%f is float", x2))
+
+#readline or take input
+a = readline()
+# convert the inputted value to integer
+a = as.integer(a);
+print(a)

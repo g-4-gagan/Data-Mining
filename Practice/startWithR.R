@@ -12,6 +12,8 @@ x = "Hello World!"  # string
 x1 = 255            # integer
 x2 = 23.14          # float 
 
+cat("\nCat function Work with Escape characters\n")
+
 # string print
 print(sprintf("%s is a string", x))
 

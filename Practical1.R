@@ -34,6 +34,6 @@ print(ve)
 
 summary(ve,E)
 
-#plot(E)
+plot(E)
 #plot(ve)
 #plot(E,layout=layout.circle)

@@ -35,5 +35,5 @@ print(ve)
 summary(ve,E)
 
 plot(E)
-#plot(ve)
-#plot(E,layout=layout.circle)
+plot(ve)
+plot(E,layout=layout.circle)

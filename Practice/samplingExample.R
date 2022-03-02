@@ -13,3 +13,19 @@ train = mtcars[trainIndex,]
 test = mtcars[-trainIndex,]
 print(test)
 
+#using caTools library
+#install.packages("caTools")
+library("caTools")
+
+data("iris")
+
+set.seed(123) #set seed so that same sample can be reproduce in future also
+split<-sample.split(iris$Species,SplitRatio = 0.75)
+
+print(split)
+training_set = subset(iris,split==TRUE)
+testing_set = subset(iris,split==FALSE)
+
+dim(training_set)
+dim(testing_set)
+

@@ -29,3 +29,8 @@ testing_set = subset(iris,split==FALSE)
 dim(training_set)
 dim(testing_set)
 
+#by genearting random numbers till number of rows
+#sample(number of rows,number of data)
+s<-sample(150,50)
+print(s)
+#split the data similarly as per the first method

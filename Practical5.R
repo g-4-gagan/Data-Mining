@@ -53,4 +53,10 @@ library(caret)
 print(confusionMatrix(testing_set[,5],p)$table)
 print(confusionMatrix(testing_set[,5],p)$overall["Accuracy"]*100)
 
+#Random subsampling
+
+#cross-validation
+model<-train(iris[,1:4],iris[,5],'rpart',
+             trControl = trainControl(method = 'cv', number=4))
+model
 

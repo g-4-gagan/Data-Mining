@@ -104,11 +104,24 @@ print("Cross Validation")
 
 #DECISION TREE
 
+print("Naive bayes-Cross Validation-part a")
+
+nb_model<-train(iris[,1:4],iris[,5],'nb',
+             trControl = trainControl(method = 'cv', number=4))
+print(nb_model)
+
+print("KNN-Cross Validation-part a")
+
+knn_model<-train(iris[,1:4],iris[,5],'knn',
+             trControl = trainControl(method = 'cv', number=4))
+print(knn_model)
+
+
 print("Decision Tree-Cross Validation-part a")
 
-model<-train(iris[,1:4],iris[,5],'rpart',
+Dtree_model<-train(iris[,1:4],iris[,5],'rpart',
              trControl = trainControl(method = 'cv', number=4))
-model
+print(Dtree_model)
 
 #part b
 print("Part b start Training set = 66.6% (2/3rd of total), Test set = 33.3% ")

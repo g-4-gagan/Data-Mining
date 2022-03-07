@@ -14,10 +14,21 @@ data(iris)
 print(summary(iris))
 print(head(iris,5))
 
-#part a
-#Hold-out Method
-
+#library imports
 library(caTools)
+library(rpart)
+#?rpart
+library(e1071)
+library(class)
+library(rpart.plot)
+library(caret)
+
+#part a
+print("Part a start Training set = 75% Test set = 25% ")
+
+#Hold-out Method
+print("Hold out Method")
+
 set.seed(143)
 split<-sample.split(iris$Species,SplitRatio = 0.75)
 
@@ -34,15 +45,25 @@ test_scale <- scale(testing_set[,1:4])
 print(dim(training_set))
 print(dim(testing_set))
 
-library(rpart)
-#?rpart
-
-library(e1071)
-library(class)
-
 #Naive bayes
 
+print("Naive bayes-Hold out-part a")
+
+classifier_naive <- naiveBayes(Species~., data = training_set)
+print(classifier_naive)
+
+y_pred <- predict(classifier_naive, newdata = testing_set)
+print(y_pred)
+
+#confusion matrix
+cm <- table(testing_set$Species, y_pred)
+print(cm)
+
+print(confusionMatrix(cm))
+
 #K-Nearest
+
+print("KNN-Hold out-part a")
 
 # Fitting KNN model to traning  dataset
 classifier_knn <- knn(train = train_scale, test = test_scale,
@@ -58,52 +79,51 @@ misClassError <- mean(classifier_knn != testing_set$Species)
 print(paste("Accuracy of KNN model: ", 1 - misClassError))
 
 #DECISION TREE
+
+print("Decision Tree-Hold out-part a")
+
 dtm<-rpart(Species~.,training_set,method = "class")
 #dtm #gives textual description
 #plot(dtm)
 #text(dtm) #adding text to plot
-
-#install.packages("rpart.plot")
-library(rpart.plot)
 
 rpart.plot(dtm)
 rpart.plot(dtm,type = 4, extra = 101)
 
 p<-predict(dtm,testing_set,type = "class")
 
-library(caret)
-
 #print(confusionMatrix(testing_set[,5],p))
 print(confusionMatrix(testing_set[,5],p)$table)
 print(confusionMatrix(testing_set[,5],p)$overall["Accuracy"]*100)
 
 #Random subsampling
+print("Random Subsampling")
 
 #cross-validation
+print("Cross Validation")
 
 #DECISION TREE
+
+print("Decision Tree-Cross Validation-part a")
+
 model<-train(iris[,1:4],iris[,5],'rpart',
              trControl = trainControl(method = 'cv', number=4))
 model
 
 #part b
-#Hold-out Method
+print("Part b start Training set = 66.6% (2/3rd of total), Test set = 33.3% ")
 
-library(caTools)
+#Hold-out Method
+print("Hold out Method")
+
 set.seed(143)
 split<-sample.split(iris$Species,SplitRatio = 0.6666)
 
 training_set = subset(iris,split==TRUE)
 testing_set = subset(iris,split==FALSE)
 
-#summary(training_set)
-#summary(testing_set)
-
 print(dim(training_set))
 print(dim(testing_set))
-
-library(rpart)
-#?rpart
 
 #Naive bayes
 
@@ -113,23 +133,20 @@ library(rpart)
 #DECISION TREE
 dtm<-rpart(Species~.,training_set,method = "class")
 
-#install.packages("rpart.plot")
-library(rpart.plot)
-
 rpart.plot(dtm)
 rpart.plot(dtm,type = 4, extra = 101)
 
 p<-predict(dtm,testing_set,type = "class")
-
-library(caret)
 
 #print(confusionMatrix(testing_set[,5],p))
 print(confusionMatrix(testing_set[,5],p)$table)
 print(confusionMatrix(testing_set[,5],p)$overall["Accuracy"]*100)
 
 #Random subsampling
+print("Random Subsampling")
 
 #cross-validation
+print("Cross Validation")
 
 #DECISION TREE
 model<-train(iris[,1:4],iris[,5],'rpart',

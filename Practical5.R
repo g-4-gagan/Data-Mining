@@ -102,7 +102,7 @@ print("Random Subsampling")
 #cross-validation
 print("Cross Validation")
 
-#DECISION TREE
+#Naive Bayes
 
 print("Naive bayes-Cross Validation-part a")
 
@@ -110,12 +110,15 @@ nb_model<-train(iris[,1:4],iris[,5],'nb',
              trControl = trainControl(method = 'cv', number=4))
 print(nb_model)
 
+#KNN
+
 print("KNN-Cross Validation-part a")
 
 knn_model<-train(iris[,1:4],iris[,5],'knn',
              trControl = trainControl(method = 'cv', number=4))
 print(knn_model)
 
+#Decision Tree
 
 print("Decision Tree-Cross Validation-part a")
 
@@ -135,25 +138,58 @@ split<-sample.split(iris$Species,SplitRatio = 0.6666)
 training_set = subset(iris,split==TRUE)
 testing_set = subset(iris,split==FALSE)
 
+#feature scaling
+train_scale <- scale(training_set[,1:4])
+test_scale <- scale(testing_set[,1:4])
+
 print(dim(training_set))
 print(dim(testing_set))
 
 #Naive bayes
 
+print("Naive bayes-Hold out-part b")
+
+classifier_naive <- naiveBayes(Species~., data = training_set)
+print(classifier_naive)
+
+y_pred <- predict(classifier_naive, newdata = testing_set)
+print(y_pred)
+
+#confusion matrix
+cm <- table(testing_set$Species, y_pred)
+print(cm)
+
+print(confusionMatrix(cm))
+
 #K-Nearest
 
+print("KNN-Hold out-part b")
+
+# Fitting KNN model to traning  dataset
+classifier_knn <- knn(train = train_scale, test = test_scale,
+                      cl = training_set$Species,
+                      k=1)
+print(classifier_knn)
+
+#confusion matrix
+cm <- table(testing_set$Species, classifier_knn)
+print(cm)
+
+misClassError <- mean(classifier_knn != testing_set$Species)
+print(paste("Accuracy of KNN model: ", 1 - misClassError))
 
 #DECISION TREE
+
+print("Decision Tree-Hold out-part b")
+
 dtm<-rpart(Species~.,training_set,method = "class")
 
-rpart.plot(dtm)
+#rpart.plot(dtm)
 rpart.plot(dtm,type = 4, extra = 101)
 
 p<-predict(dtm,testing_set,type = "class")
 
-#print(confusionMatrix(testing_set[,5],p))
-print(confusionMatrix(testing_set[,5],p)$table)
-print(confusionMatrix(testing_set[,5],p)$overall["Accuracy"]*100)
+print(confusionMatrix(testing_set[,5],p))
 
 #Random subsampling
 print("Random Subsampling")
@@ -161,8 +197,27 @@ print("Random Subsampling")
 #cross-validation
 print("Cross Validation")
 
+#Naive Bayes
+
+print("Naive bayes-Cross Validation-part b")
+
+nb_model<-train(iris[,1:4],iris[,5],'nb',
+                trControl = trainControl(method = 'cv', number=3))
+print(nb_model)
+
+#KNN
+
+print("KNN-Cross Validation-part b")
+
+knn_model<-train(iris[,1:4],iris[,5],'knn',
+                 trControl = trainControl(method = 'cv', number=3))
+print(knn_model)
+
 #DECISION TREE
-model<-train(iris[,1:4],iris[,5],'rpart',
+
+print("Decision Tree-Cross Validation-part b")
+
+Dtree_model<-train(iris[,1:4],iris[,5],'rpart',
              trControl = trainControl(method = 'cv', number=3))
-model
+print(Dtree_model)
 

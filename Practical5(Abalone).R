@@ -78,7 +78,7 @@ rpart.plot(dtm,type = 4, extra = 101)
 
 p<-predict(dtm,testing_set,type = "class")
 
-print(testing_set[1])
+#print(testing_set[1])
 #print(confusionMatrix(testing_set[,1],p))
 #print(confusionMatrix(testing_set[,1],p)$table)
 #print(confusionMatrix(testing_set[,1],p)$overall["Accuracy"]*100)

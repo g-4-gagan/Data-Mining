@@ -29,7 +29,7 @@ df_trans <- as(split(test_df$Food, test_df$Receipt_Number),"transactions")
 
 #support and confidence
 #part 1:- minimum support as 50% and minimum confidence as 75% 
-rules <- apriori(df_trans,parameter = list(supp = .50, conf = .75))
+rules <- apriori(df_trans,parameter = list(supp = .5, conf = .5))
 plot(rules)
 
 rules<- sort(rules, by="support", decreasing = T)

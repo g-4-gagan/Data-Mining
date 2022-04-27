@@ -99,6 +99,70 @@ print(confusionMatrix(testing_set[,5],p)$overall["Accuracy"]*100)
 #Random subsampling
 print("Random Subsampling")
 
+dtm_acc=list()
+knn_acc=list()
+naive_acc=list()
+
+for(x in 1:5)
+{
+  set.seed(123)
+  
+  split<-sample.split(iris$Species,SplitRatio = 0.75)
+  
+  train_set_rndm = subset(iris,split==TRUE)
+  test_set_rndm = subset(iris,split==FALSE) 
+  
+  dim(test_set_rndm)
+  dim(train_set_rndm)
+  
+  train_scale_rndm <- scale(train_set_rndm[,1:4]) 
+  test_scale_rndm <- scale(test_set_rndm[,1:4])
+  
+  dtm_rndm = rpart(Species~., train_set_rndm,method = "class")
+  dtm_rndm
+  #plot(dtm_rndm)
+  #rpart.plot(dtm_rndm)
+  #rpart.plot(dtm_rndm,type = 4 , extra = 101)
+  
+  p=predict(dtm_rndm , test_set_rndm,type="class")
+  
+  confusionMatrix(test_set_rndm[,5],p)$table
+  dtm_acc[x] = (confusionMatrix(test_set_rndm[,5],p)$overall['Accuracy']*100)
+  print(paste("Decision tree Accuracy: ",dtm_acc[x]))
+  
+  # K-NEAREST USING RANDOM SUBSAMPLING (PART A)
+  classifier_knn_rndm <- knn(train = train_scale_rndm[,c(1,2,3,4)], test = test_scale_rndm[,c(1,2,3,4)],cl = train_set_rndm$Species,k=1)
+  classifier_knn
+  
+  #confusion matrix 
+  cm = table(test_set_rndm$Species, classifier_knn_rndm)
+  cm
+  
+  misclasserror = mean(classifier_knn_rndm!=test_set_rndm$Species)
+  print(paste("Accuracy of knn model is :: ", 1 - misclasserror))
+  
+  knn_acc[x] = confusionMatrix(test_set_rndm[,5],classifier_knn_rndm)$overall['Accuracy']*100
+  knn_acc
+  
+  # NAIVE BAYES USING RANDOM SUBSAMPLING (PART A) 
+  
+  classifier_naive_rndm = naiveBayes(Species~., data= train_set_rndm)
+  classifier_naive
+  
+  predicted_y = predict(classifier_naive_rndm,newdata = test_set_rndm)
+  predicted_y
+  table(predicted_y)
+  
+  #confusion matrix 
+  cm = table(test_set_rndm$Species, predicted_y)
+  print("Naive Bayes confusion matrix")
+  print(cm)
+  confusionMatrix(cm)
+  
+  naive_acc[x]=confusionMatrix(test_set_rndm$Species,predicted_y)$overall['Accuracy']*100
+  naive_acc
+}
+
 #cross-validation
 print("Cross Validation")
 
@@ -193,6 +257,70 @@ print(confusionMatrix(testing_set[,5],p))
 
 #Random subsampling
 print("Random Subsampling")
+
+dtm_acc=list()
+knn_acc=list()
+naive_acc=list()
+
+for(x in 1:5)
+{
+  set.seed(123)
+  
+  split<-sample.split(iris$Species,SplitRatio = 0.66)
+  
+  train_set_rndm = subset(iris,split==TRUE)
+  test_set_rndm = subset(iris,split==FALSE) 
+  
+  dim(test_set_rndm)
+  dim(train_set_rndm)
+  
+  train_scale_rndm <- scale(train_set_rndm[,1:4]) 
+  test_scale_rndm <- scale(test_set_rndm[,1:4])
+  
+  dtm_rndm = rpart(Species~., train_set_rndm,method = "class")
+  dtm_rndm
+  #plot(dtm_rndm)
+  #rpart.plot(dtm_rndm)
+  #rpart.plot(dtm_rndm,type = 4 , extra = 101)
+  
+  p=predict(dtm_rndm , test_set_rndm,type="class")
+  
+  confusionMatrix(test_set_rndm[,5],p)$table
+  dtm_acc[x] = (confusionMatrix(test_set_rndm[,5],p)$overall['Accuracy']*100)
+  print(paste("Decision tree Accuracy: ",dtm_acc[x]))
+  
+  # K-NEAREST USING RANDOM SUBSAMPLING (PART A)
+  classifier_knn_rndm <- knn(train = train_scale_rndm[,c(1,2,3,4)], test = test_scale_rndm[,c(1,2,3,4)],cl = train_set_rndm$Species,k=1)
+  classifier_knn
+  
+  #confusion matrix 
+  cm = table(test_set_rndm$Species, classifier_knn_rndm)
+  cm
+  
+  misclasserror = mean(classifier_knn_rndm!=test_set_rndm$Species)
+  print(paste("Accuracy of knn model is :: ", 1 - misclasserror))
+  
+  knn_acc[x] = confusionMatrix(test_set_rndm[,5],classifier_knn_rndm)$overall['Accuracy']*100
+  knn_acc
+  
+  # NAIVE BAYES USING RANDOM SUBSAMPLING (PART A) 
+  
+  classifier_naive_rndm = naiveBayes(Species~., data= train_set_rndm)
+  classifier_naive
+  
+  predicted_y = predict(classifier_naive_rndm,newdata = test_set_rndm)
+  predicted_y
+  table(predicted_y)
+  
+  #confusion matrix 
+  cm = table(test_set_rndm$Species, predicted_y)
+  print("Naive Bayes confusion matrix")
+  print(cm)
+  confusionMatrix(cm)
+  
+  naive_acc[x]=confusionMatrix(test_set_rndm$Species,predicted_y)$overall['Accuracy']*100
+  naive_acc
+}
 
 #cross-validation
 print("Cross Validation")

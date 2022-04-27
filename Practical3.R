@@ -27,10 +27,10 @@ data("iris")
 
 View(iris)
 summary(iris)
-apply(iris,2,sd)
+apply(iris[,1:4],2,sd)
 
 #for making mean = 0 and standard deviation = 1 in IRIS dataset.
 iris_pre<-preProcess(iris[,1:4], method=c("center", "scale"))
-iris_standard<-predict(iris_pre, iris)
+iris_standard<-predict(iris_pre, iris[,1:4])
 summary(iris_standard)
 apply(iris_standard,2,sd)
